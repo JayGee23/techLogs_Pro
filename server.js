@@ -29,6 +29,7 @@ app.use(cookieParser())
 app.use('/', express.static(path.join(__dirname, 'public')))
 
 app.use('/', require('./routes/root'))
+app.use('/users', require('./routes/userRoutes'))
 
 //catch all at the end. End path that doesn't exist will end up here
 app.all('*', (req, res) => {
@@ -44,11 +45,13 @@ app.all('*', (req, res) => {
 
 app.use(errorHandler)
 
+//listening for 'open' event and then triggers call back function
 mongoose.connection.once('open', () => {
     console.log('Connected to MongoDB')
     app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
 })
 
+//listening for 'error' event and triggers call back function
 mongoose.connection.on('error', err => {
     console.log(err)
     logEvents(`${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`, 'mongoErrLog.log')
