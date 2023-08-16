@@ -9,5 +9,4 @@ router.route('/')
     .delete(usersController.deleteUser)
 
 
-
 module.exports = router
